@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[    140718,       4014]
-NotebookOptionsPosition[    133769,       3834]
-NotebookOutlinePosition[    134420,       3857]
-CellTagsIndexPosition[    134377,       3854]
+NotebookDataLength[    140721,       4008]
+NotebookOptionsPosition[    133768,       3828]
+NotebookOutlinePosition[    134419,       3851]
+CellTagsIndexPosition[    134376,       3848]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -2106,7 +2106,7 @@ Cell[BoxData[
  FormBox[
   RowBox[{
    RowBox[{
-    SubsuperscriptBox["\[Integral]", "0", "S"], 
+    SubsuperscriptBox["\[Integral]", "a", "b"], 
     RowBox[{
      RowBox[{"f", "(", "R", ")"}], 
      RowBox[{"\[DifferentialD]", "R"}]}]}], "\[TildeTilde]", 
@@ -2120,56 +2120,51 @@ Cell[BoxData[
      RowBox[{"f", "(", 
       SubscriptBox["R", "k"], ")"}]}]}]}], 
   TraditionalForm]], "EquationNumbered",
- CellChangeTimes->{{3.762008177329588*^9, 3.762008283870071*^9}},
+ CellChangeTimes->{{3.762008177329588*^9, 3.762008283870071*^9}, {
+  3.7620367714738417`*^9, 3.7620367735901117`*^9}},
  TextAlignment->Left,
  TextJustification->0.],
 
 Cell[TextData[{
- "Here, (for some reason) ",
+ "Here, let (different from Manolopoulos and Wyatt) ",
  Cell[BoxData[
   FormBox[
    RowBox[{
-    SubscriptBox["R", "0"], "=", "S"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+    SubscriptBox["R", "0"], "=", "a"}], TraditionalForm]]],
  " and ",
  Cell[BoxData[
   FormBox[
    RowBox[{
     SubscriptBox["R", 
-     RowBox[{"M", "+", "1"}]], "=", "0"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+     RowBox[{"M", "+", "1"}]], "=", "b"}], TraditionalForm]]],
  ".  The remaining nodes ",
  Cell[BoxData[
   FormBox[
-   SubscriptBox["R", "k"], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+   SubscriptBox["R", "k"], TraditionalForm]]],
  " and weights ",
  Cell[BoxData[
   FormBox[
-   SubscriptBox["w", "k"], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+   SubscriptBox["w", "k"], TraditionalForm]]],
  " are chosen so as to make the equation above exact for polynomials up to \
 degree ",
  Cell[BoxData[
   FormBox[
    RowBox[{
-    RowBox[{"2", "M"}], "+", "1"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+    RowBox[{"2", "M"}], "+", "1"}], TraditionalForm]]],
  ".  For ",
  Cell[BoxData[
   FormBox[
-   RowBox[{"M", "=", "0"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+   RowBox[{"M", "=", "0"}], TraditionalForm]]],
  ", this equation reduces to the trapezoid rule, while for ",
  Cell[BoxData[
   FormBox[
-   RowBox[{"M", "=", "1"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+   RowBox[{"M", "=", "1"}], TraditionalForm]]],
  ", it reduces to Simpson\[CloseCurlyQuote]s rule. We\[CloseCurlyQuote]ll \
-discuss how to generate these nodes and weights later. "
+discuss how to generate these nodes and weights with Mathematica later. "
 }], "Text",
  CellChangeTimes->{{3.76200828600025*^9, 3.762008421405158*^9}, {
-  3.762008465453402*^9, 3.762008503783567*^9}},
+  3.762008465453402*^9, 3.762008503783567*^9}, {3.76203678345884*^9, 
+  3.7620368256682*^9}},
  TextAlignment->Left,
  TextJustification->0.],
 
@@ -2190,22 +2185,27 @@ Cell[BoxData[
     RowBox[{
      SubscriptBox["u", "i"], "(", "R", ")"}], "=", 
     RowBox[{
-     OverscriptBox[
-      UnderscriptBox["\[Product]", 
-       RowBox[{
-        RowBox[{"j", "\[NotEqual]", "i"}], ",", " ", 
-        RowBox[{"j", "=", "0"}]}]], 
-      RowBox[{"M", "+", "1"}]], 
-     FractionBox[
-      RowBox[{"R", "-", 
-       SubscriptBox["R", "j"]}], 
+     SubsuperscriptBox["w", "i", 
       RowBox[{
-       SubscriptBox["R", "i"], "-", 
-       SubscriptBox["R", "j"]}]]}]}], ",", " ", 
+       RowBox[{"-", "1"}], "/", "2"}]], 
+     RowBox[{
+      OverscriptBox[
+       UnderscriptBox["\[Product]", 
+        RowBox[{
+         RowBox[{"j", "\[NotEqual]", "i"}], ",", " ", 
+         RowBox[{"j", "=", "0"}]}]], 
+       RowBox[{"M", "+", "1"}]], 
+      FractionBox[
+       RowBox[{"R", "-", 
+        SubscriptBox["R", "j"]}], 
+       RowBox[{
+        SubscriptBox["R", "i"], "-", 
+        SubscriptBox["R", "j"]}]]}]}]}], ",", " ", 
    RowBox[{"i", "=", "0"}], ",", "1", ",", "...", ",", 
    RowBox[{"M", "+", "1"}]}], TraditionalForm]], "EquationNumbered",
  CellChangeTimes->{{3.762008596895911*^9, 3.762008725278974*^9}, {
-  3.762009258307585*^9, 3.762009272306983*^9}},
+  3.762009258307585*^9, 3.762009272306983*^9}, {3.762037153778034*^9, 
+  3.7620371602614527`*^9}},
  TextAlignment->Left,
  TextJustification->0.],
 
@@ -2665,15 +2665,9 @@ through that here."
  TextJustification->0.]
 }, Open  ]],
 
-Cell[TextData[{
- "Okay, let\[CloseCurlyQuote]s code up what these look like for ",
- Cell[BoxData[
-  FormBox[
-   RowBox[{"M", "=", "6"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
- "."
-}], "Text",
- CellChangeTimes->{{3.762012474244833*^9, 3.762012492095817*^9}},
+Cell["Okay, let\[CloseCurlyQuote]s code up what these look like!", "Text",
+ CellChangeTimes->{{3.762012474244833*^9, 3.762012492095817*^9}, {
+  3.7620370989681053`*^9, 3.762037102239688*^9}},
  TextAlignment->Left,
  TextJustification->0.]
 }, Open  ]],
@@ -3872,13 +3866,13 @@ Cell[2647, 78, 643, 26, 46, "Text"]
 Cell[CellGroupData[{
 Cell[3327, 109, 195, 4, 94, "Section"],
 Cell[3525, 115, 1039, 31, 105, "Text"],
-Cell[4567, 148, 658, 19, 108, "EquationNumbered"],
-Cell[5228, 169, 897, 28, 108, "EquationNumbered"],
-Cell[6128, 199, 141, 3, 41, "Text"],
-Cell[6272, 204, 509, 14, 61, "EquationNumbered"],
-Cell[6784, 220, 155, 3, 41, "Text"],
-Cell[6942, 225, 476, 16, 108, "EquationNumbered"],
-Cell[7421, 243, 146, 3, 41, "Text"],
+Cell[4567, 148, 658, 19, 104, "EquationNumbered"],
+Cell[5228, 169, 897, 28, 104, "EquationNumbered"],
+Cell[6128, 199, 141, 3, 40, "Text"],
+Cell[6272, 204, 509, 14, 60, "EquationNumbered"],
+Cell[6784, 220, 155, 3, 40, "Text"],
+Cell[6942, 225, 476, 16, 104, "EquationNumbered"],
+Cell[7421, 243, 146, 3, 40, "Text"],
 Cell[7570, 248, 348, 12, 52, "EquationNumbered"],
 Cell[7921, 262, 392, 14, 57, "EquationNumbered"],
 Cell[8316, 278, 341, 11, 40, "Text"],
@@ -3914,13 +3908,13 @@ Cell[26911, 952, 725, 26, 56, "EquationNumbered"],
 Cell[27639, 980, 486, 19, 44, "Text"],
 Cell[28128, 1001, 515, 15, 60, "EquationNumbered"],
 Cell[28646, 1018, 233, 7, 40, "Text"],
-Cell[28882, 1027, 953, 32, 84, "EquationNumbered"],
-Cell[29838, 1061, 242, 8, 40, "Text"],
-Cell[30083, 1071, 975, 31, 88, "EquationNumbered"],
-Cell[31061, 1104, 813, 29, 49, "Text"],
-Cell[31877, 1135, 1173, 43, 52, "Text"],
-Cell[33053, 1180, 714, 23, 84, "EquationNumbered"],
-Cell[33770, 1205, 325, 9, 40, "Text"],
+Cell[28882, 1027, 953, 32, 168, "EquationNumbered"],
+Cell[29838, 1061, 242, 8, 80, "Text"],
+Cell[30083, 1071, 975, 31, 176, "EquationNumbered"],
+Cell[31061, 1104, 813, 29, 98, "Text"],
+Cell[31877, 1135, 1173, 43, 104, "Text"],
+Cell[33053, 1180, 714, 23, 168, "EquationNumbered"],
+Cell[33770, 1205, 325, 9, 80, "Text"],
 Cell[CellGroupData[{
 Cell[34120, 1218, 154, 3, 46, "Subsubsection"],
 Cell[34277, 1223, 165, 3, 40, "Text"],
@@ -3935,7 +3929,7 @@ Cell[37655, 1342, 985, 31, 98, "Text"],
 Cell[38643, 1375, 795, 25, 52, "Text"],
 Cell[39441, 1402, 1040, 32, 104, "EquationNumbered"],
 Cell[40484, 1436, 254, 7, 40, "Text"],
-Cell[40741, 1445, 477, 15, 61, "EquationNumbered"],
+Cell[40741, 1445, 477, 15, 122, "EquationNumbered"],
 Cell[41221, 1462, 351, 10, 60, "EquationNumbered"]
 }, Open  ]],
 Cell[CellGroupData[{
@@ -3955,64 +3949,64 @@ Cell[52038, 1812, 911, 26, 62, "EquationNumbered"],
 Cell[52952, 1840, 876, 24, 90, "Text"],
 Cell[53831, 1866, 1796, 46, 96, "EquationNumbered"],
 Cell[55630, 1914, 394, 12, 49, "Text"],
-Cell[56027, 1928, 213, 4, 41, "Text"],
+Cell[56027, 1928, 213, 4, 40, "Text"],
 Cell[CellGroupData[{
-Cell[56265, 1936, 706, 24, 41, "Item1Numbered"],
-Cell[56974, 1962, 772, 25, 44, "Item1Numbered"],
-Cell[57749, 1989, 930, 25, 38, "Item1Numbered"],
-Cell[58682, 2016, 805, 25, 42, "Item1Numbered"],
-Cell[59490, 2043, 1066, 33, 41, "Item1Numbered"]
+Cell[56265, 1936, 706, 24, 38, "Item1Numbered"],
+Cell[56974, 1962, 772, 25, 40, "Item1Numbered"],
+Cell[57749, 1989, 930, 25, 34, "Item1Numbered"],
+Cell[58682, 2016, 805, 25, 39, "Item1Numbered"],
+Cell[59490, 2043, 1066, 33, 39, "Item1Numbered"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
 Cell[60605, 2082, 167, 3, 62, "Subsection"],
-Cell[60775, 2087, 419, 10, 41, "Text"],
-Cell[61197, 2099, 164, 3, 41, "Text"],
-Cell[61364, 2104, 597, 20, 108, "EquationNumbered"],
-Cell[61964, 2126, 1407, 47, 100, "Text"],
-Cell[63374, 2175, 319, 8, 40, "Text"],
-Cell[63696, 2185, 784, 24, 108, "EquationNumbered"],
-Cell[64483, 2211, 556, 18, 43, "Text"],
+Cell[60775, 2087, 419, 10, 70, "Text"],
+Cell[61197, 2099, 164, 3, 40, "Text"],
+Cell[61364, 2104, 650, 21, 105, "EquationNumbered"],
+Cell[62017, 2127, 1265, 41, 100, "Text"],
+Cell[63285, 2170, 319, 8, 40, "Text"],
+Cell[63607, 2180, 953, 29, 108, "EquationNumbered"],
+Cell[64563, 2211, 556, 18, 43, "Text"],
 Cell[CellGroupData[{
-Cell[65064, 2233, 2994, 89, 64, "Item1Numbered"],
-Cell[68061, 2324, 4225, 139, 158, "Item1Numbered"],
-Cell[72289, 2465, 3490, 111, 126, "Item1Numbered"],
-Cell[75782, 2578, 2934, 86, 151, "Item1Numbered"]
+Cell[65144, 2233, 2994, 89, 64, "Item1Numbered"],
+Cell[68141, 2324, 4225, 139, 158, "Item1Numbered"],
+Cell[72369, 2465, 3490, 111, 126, "Item1Numbered"],
+Cell[75862, 2578, 2934, 86, 151, "Item1Numbered"]
 }, Open  ]],
-Cell[78731, 2667, 318, 10, 40, "Text"]
+Cell[78811, 2667, 237, 4, 40, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[79086, 2682, 159, 3, 62, "Subsection"],
-Cell[79248, 2687, 607, 22, 40, "Text"],
-Cell[79858, 2711, 239, 4, 40, "Text"],
-Cell[80100, 2717, 1222, 38, 196, "Input"],
-Cell[81325, 2757, 176, 3, 40, "Text"],
-Cell[81504, 2762, 577, 15, 160, "Input"],
-Cell[82084, 2779, 655, 22, 40, "Text"],
-Cell[82742, 2803, 423, 14, 83, "Input"],
-Cell[83168, 2819, 116, 1, 40, "Text"],
-Cell[83287, 2822, 816, 22, 122, "Input"],
-Cell[84106, 2846, 254, 6, 40, "Text"],
-Cell[84363, 2854, 444, 14, 91, "EquationNumbered"],
-Cell[84810, 2870, 321, 9, 81, "EquationNumbered"],
-Cell[85134, 2881, 167, 3, 40, "Text"],
-Cell[85304, 2886, 1884, 60, 97, "EquationNumbered"],
-Cell[87191, 2948, 237, 6, 40, "Text"],
-Cell[87431, 2956, 1518, 48, 100, "EquationNumbered"],
-Cell[88952, 3006, 139, 1, 40, "Text"],
-Cell[89094, 3009, 811, 23, 83, "Input"],
-Cell[89908, 3034, 110, 1, 40, "Text"],
-Cell[90021, 3037, 2396, 70, 257, "Input"],
+Cell[79085, 2676, 159, 3, 62, "Subsection"],
+Cell[79247, 2681, 607, 22, 40, "Text"],
+Cell[79857, 2705, 239, 4, 40, "Text"],
+Cell[80099, 2711, 1222, 38, 174, "Input"],
+Cell[81324, 2751, 176, 3, 40, "Text"],
+Cell[81503, 2756, 577, 15, 138, "Input"],
+Cell[82083, 2773, 655, 22, 40, "Text"],
+Cell[82741, 2797, 423, 14, 61, "Input"],
+Cell[83167, 2813, 116, 1, 40, "Text"],
+Cell[83286, 2816, 816, 22, 100, "Input"],
+Cell[84105, 2840, 254, 6, 40, "Text"],
+Cell[84362, 2848, 444, 14, 91, "EquationNumbered"],
+Cell[84809, 2864, 321, 9, 81, "EquationNumbered"],
+Cell[85133, 2875, 167, 3, 40, "Text"],
+Cell[85303, 2880, 1884, 60, 97, "EquationNumbered"],
+Cell[87190, 2942, 237, 6, 40, "Text"],
+Cell[87430, 2950, 1518, 48, 100, "EquationNumbered"],
+Cell[88951, 3000, 139, 1, 40, "Text"],
+Cell[89093, 3003, 811, 23, 61, "Input"],
+Cell[89907, 3028, 110, 1, 40, "Text"],
+Cell[90020, 3031, 2396, 70, 235, "Input"],
 Cell[CellGroupData[{
-Cell[92442, 3111, 740, 18, 83, "Input"],
-Cell[93185, 3131, 589, 10, 83, "Output"]
+Cell[92441, 3105, 740, 18, 61, "Input"],
+Cell[93184, 3125, 589, 10, 61, "Output"]
 }, Open  ]],
-Cell[93789, 3144, 288, 5, 40, "Text"],
+Cell[93788, 3138, 288, 5, 40, "Text"],
 Cell[CellGroupData[{
-Cell[94102, 3153, 723, 19, 83, "Input"],
-Cell[94828, 3174, 38579, 647, 500, "Output"]
+Cell[94101, 3147, 723, 19, 61, "Input"],
+Cell[94827, 3168, 38579, 647, 478, "Output"]
 }, Open  ]],
-Cell[133422, 3824, 307, 5, 70, "Text"]
+Cell[133421, 3818, 307, 5, 70, "Text"]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]]
