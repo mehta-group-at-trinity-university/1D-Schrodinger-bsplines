@@ -32,6 +32,7 @@ program Calc2BodyBoundState
   read(5,*)
   read(5,*) alpha, mass, DD, x0
   write(6,*) 'alpha,            mass,              DD,               x0'
+  DD = 10.d0/x0**6
   write(6,'(F15.10,F15.10,F15.10,F15.10)') alpha, mass, DD, x0
   write(6,*)
 
@@ -80,7 +81,9 @@ program Calc2BodyBoundState
   end do
 
   write(6,*) 'Calling GridMaker.'
-  call GridMaker(xNumPoints,xMin,xMax,xPoints)
+  call GridMaker(xNumPoints/2,xMin,x0,"linear",xPoints(1::xNumPoints/2)
+  dx=xPoints(xNumPoints/2)-xPoints(xNumPoints/2-1)
+  call GridMaker(xNumPoints/2,x0+dx,xMax,"quadratic",xPoints(xNumPoints/2+1::xNumPoints)
 
   write(6,*) 'Calculating the basis functions.'
   call CalcBasisFuncs(Left,Right,Order,xPoints,LegPoints,xLeg, &
@@ -160,7 +163,7 @@ subroutine CalcHamiltonian(lwave)
               a = wLeg(lx)*xIntScale
               x=xIntScale*xLeg(lx)+xScaledZero
               TempS = TempS + a*u(lx,kx,ix)*u(lx,kx,ixp)
-              TempV = TempV + a*u(lx,kx,ix)*(alpha*VSech(DD,x0,x,lwave))*u(lx,kx,ixp)
+              TempV = TempV + a*u(lx,kx,ix)*(alpha*Vsqrc6(DD,x0,x,lwave))*u(lx,kx,ixp)
               TempT = TempT + a*0.5d0/mu*(-u(lx,kx,ix)*uxx(lx,kx,ixp))
 !              print*,a, TempS, TempT, TempV
            enddo
@@ -177,14 +180,54 @@ subroutine CalcHamiltonian(lwave)
 1002 format(a64)
   
 end subroutine CalcHamiltonian
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+SUBROUTINE GridMaker(numpts,E1,E2,scale,grid)
+  implicit none
+  DOUBLE PRECISION grid(numpts)
+  DOUBLE PRECISION E1,E2,LE1,LE2,DE,LDE
+  INTEGER numpts, iE
+  CHARACTER(LEN=*), INTENT(IN) :: scale
+  !--------------------------------------------
+  ! Linear grid:
+  !--------------------------------------------
+  grid(1)=E1
+  IF((scale.EQ."linear").and.(numpts.gt.1)) THEN
+     DE=(E2-E1)/DBLE(numpts-1)
+     DO iE=1,numpts
+        grid(iE) = E1 + (iE-1)*DE
+     ENDDO
+  ENDIF
+  !--------------------------------------------
+  ! Log grid:
+  !--------------------------------------------
+  IF((scale.EQ."log").and.(numpts.gt.1)) THEN
+     LE1=dlog(E1)
+     LE2=dlog(E2)
+
+     LDE=(LE2-LE1)/DBLE(numpts-1d0)
+     DO iE=1,numpts
+        grid(iE) = dexp(LE1 + (iE-1)*LDE)
+!        write(6,*) LE1, LE2, LDE, grid(iE)
+     ENDDO
+  ENDIF
+  !--------------------------------------------
+  ! Quadratic grid:
+  !--------------------------------------------
+  IF((scale.EQ."quadratic").and.(numpts.gt.1)) THEN
+     DE=(E2-E1)
+     DO iE=1,numpts
+        grid(iE) = E1 + ((iE-1)/DBLE(numpts-1))**2*DE
+     ENDDO
+  ENDIF
+END SUBROUTINE GridMaker
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-subroutine GridMaker(xNumPoints,xMin,xMax,xPoints)
+subroutine GridMakerOld(xNumPoints,xMin,xMax,xPoints)
   implicit none
   integer xNumPoints
   double precision xMin,xMax,xPoints(xNumPoints)
 
   integer i,j,k
-  double precision Pi
+  double precision Pi,xmid
   double precision r0New
   double precision xRswitch
   double precision xDelt,x0,x1,x2
@@ -204,7 +247,7 @@ subroutine GridMaker(xNumPoints,xMin,xMax,xPoints)
 
 
   return
-end subroutine GridMaker
+end subroutine GridMakerOld
 
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 subroutine Mydggev(N,G,LDG,L,LDL,eval,evec)
