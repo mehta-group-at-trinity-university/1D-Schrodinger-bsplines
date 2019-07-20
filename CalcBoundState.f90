@@ -160,7 +160,7 @@ subroutine CalcHamiltonian(lwave)
               a = wLeg(lx)*xIntScale
               x=xIntScale*xLeg(lx)+xScaledZero
               TempS = TempS + a*u(lx,kx,ix)*u(lx,kx,ixp)
-              TempV = TempV + a*u(lx,kx,ix)*(alpha*VSech(DD,x0,x) + lwave*(lwave+1.d0)/(x*x))*u(lx,kx,ixp)
+              TempV = TempV + a*u(lx,kx,ix)*(alpha*VSech(DD,x0,x,lwave))*u(lx,kx,ixp)
               TempT = TempT + a*0.5d0/mu*(-u(lx,kx,ix)*uxx(lx,kx,ixp))
 !              print*,a, TempS, TempT, TempV
            enddo
@@ -298,10 +298,22 @@ subroutine printmatrix(M,nr,nc,file)
 20 format(1P,100e16.8)
 end subroutine printmatrix
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-double precision function VSech(DD,x0,x)
+double precision function VSech(DD,x0,x,lwave)
   implicit none
-  double precision x,x0,DD
-  VSech = -DD/dcosh(x/x0)**2.d0
+  double precision x,x0,DD,lwave
+  VSech = -DD/dcosh(x/x0)**2.d0  + lwave*(lwave+1.d0)/(x*x)
   return
 end function VSech
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+double precision function Vsqrc6(V0,x0,x,lwave)
+  ! This returns the van der waals potential with a short-range square well
+  ! It is in van der waals units where x is measured in units of (2*mu*C6/hbar**2)**0.25
+
+  implicit none
+  double precision x, x0, V0,lwave
+  if (x.gt.x0) then
+     VsqrC6 = -x**(-6) + lwave*(lwave+1.d0)/(x*x)
+  else
+     vsqrC6 = -V0
+  endif
+end function Vsqrc6
