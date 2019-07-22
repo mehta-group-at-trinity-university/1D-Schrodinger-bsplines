@@ -41,7 +41,10 @@ C  (C) Copr. 1986-92 Numerical Recipes Software v%1jw#<0(9p#3.
         do 11 j=1,n
           if (abs(a(i,j)).gt.aamax) aamax=abs(a(i,j))
 11      continue
-        if (aamax.eq.0.d0) pause 'singular matrix in ludcmp'
+        if (aamax.eq.0.d0) then
+           write(6,*)'singular matrix in ludcmp. Press enter.'
+           read(5,*)
+        endif
         vv(i)=1.d0/aamax
 12    continue
       do 19 j=1,n

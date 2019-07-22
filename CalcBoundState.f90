@@ -3,7 +3,7 @@
 program Calc2BodyBoundState
   use TwoBodydata
   implicit none
-  double precision, external :: VSech, phirecon
+  double precision, external :: VSech, phirecon,Vsqrc6
   double precision, allocatable :: Energies(:), xgrid(:)
   integer xDimMin,iEnergy,NumEnergySteps,iE,ikeep,n,numgrid
   double precision mass,x,lwave,norm,dx
@@ -77,14 +77,15 @@ program Calc2BodyBoundState
   dx=(xMax-xMin)/numgrid
   do n=1,numgrid
      xgrid(n)=n*dx
-     write(1000,*) xgrid(n), VSech(DD,x0,xgrid(n)) + lwave*(lwave+1.d0)/(xgrid(n)**2.d0)
+     write(1000,*) xgrid(n), Vsqrc6(DD,x0,xgrid(n),lwave)
   end do
 
   write(6,*) 'Calling GridMaker.'
-  call GridMaker(xNumPoints/2,xMin,x0,"linear",xPoints(1::xNumPoints/2)
+  call GridMaker(xNumPoints/2,xMin,x0,"linear",xPoints(1:xNumPoints/2))
   dx=xPoints(xNumPoints/2)-xPoints(xNumPoints/2-1)
-  call GridMaker(xNumPoints/2,x0+dx,xMax,"quadratic",xPoints(xNumPoints/2+1::xNumPoints)
-
+  call GridMaker(xNumPoints/2,x0+dx,xMax,"quadratic",xPoints(xNumPoints/2+1:xNumPoints))
+  call printmatrix(xPoints,xNumPoints,1,6)
+!  call GridMaker(xNumPoints,xMin,xMax,"linear",xPoints)
   write(6,*) 'Calculating the basis functions.'
   call CalcBasisFuncs(Left,Right,Order,xPoints,LegPoints,xLeg, &
        xDim,xBounds,xNumPoints,0,u)
@@ -103,16 +104,18 @@ program Calc2BodyBoundState
   eval=eval*(-1.d0)
   call eigsrt(eval,evec,MatrixDim,MatrixDim)
   eval=eval*(-1.d0)
-  do n=1,10
+  do n=1,MatrixDim
      write(6,*) 'Energy Eigenvalue (',n,') = ', eval(n)
   end do
-  ikeep=1
+  
+  ikeep=28
 
   x=0.0d0
+  xMax=2.d0
   write(6,*) 'Writing the wavefunction for the ground state to fort.777 ',ikeep
   do while(x.lt.xMax)
      write(777,20) x, phirecon(x,ikeep,evec,Left,Right,xDim,MatrixDim,xNumPoints,xPoints,order)
-     x=x+0.01d0
+     x=x+0.001d0
   enddo
   write(777,*)
 
@@ -129,7 +132,7 @@ end program Calc2BodyBoundState
 subroutine CalcHamiltonian(lwave)
   use TwoBodydata
   implicit none
-  double precision, external :: VSech
+  double precision, external :: VSech,Vsqrc6
   double precision ax, bx,x,xScaledZero,xIntScale,TempT,TempS,TempV,a,lwave,mcoeff
   integer, allocatable :: kxMin(:,:),kxMax(:,:)
   integer kx,ix,ixp,lx,n
@@ -308,27 +311,27 @@ double precision function phirecon(R,beta,evec,left,right,RDim,MatrixDim,RNumPoi
   return
 end function phirecon
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-      subroutine CheckBasis(u,RDim,RNumPoints,LegPoints,xLeg,RPoints,file)
-      implicit none
-      integer RNumPoints,NumChan,LegPoints,kx,lx,ix,RDim,file
-      double precision u(LegPoints,RNumPoints,RDim),ax,bx,xLeg(LegPoints)
-      double precision RPoints(RNumPoints),xScaledZero,xIntScale, x
-
-      do ix=1,RDim
-         do kx = 1,RNumPoints-1
-            ax = RPoints(kx)
-            bx = RPoints(kx+1)
-            xIntScale = 0.5d0*(bx-ax)
-            xScaledZero = 0.5d0*(bx+ax)
-            do lx = 1,LegPoints
-              x = xIntScale*xLeg(lx)+xScaledZero
-               write(file,*), x, u(lx,kx,ix)
-            enddo
-         enddo
-         write(file,*), ' '
-      enddo      
-      
-    end subroutine CheckBasis
+subroutine CheckBasis(u,RDim,RNumPoints,LegPoints,xLeg,RPoints,file)
+  implicit none
+  integer RNumPoints,NumChan,LegPoints,kx,lx,ix,RDim,file
+  double precision u(LegPoints,RNumPoints,RDim),ax,bx,xLeg(LegPoints)
+  double precision RPoints(RNumPoints),xScaledZero,xIntScale, x
+  
+  do ix=1,RDim
+     do kx = 1,RNumPoints-1
+        ax = RPoints(kx)
+        bx = RPoints(kx+1)
+        xIntScale = 0.5d0*(bx-ax)
+        xScaledZero = 0.5d0*(bx+ax)
+        do lx = 1,LegPoints
+           x = xIntScale*xLeg(lx)+xScaledZero
+           write(file,*) x, u(lx,kx,ix)
+        enddo
+     enddo
+     write(file,*) ' '
+  enddo
+  
+end subroutine CheckBasis
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 subroutine printmatrix(M,nr,nc,file)
   implicit none
