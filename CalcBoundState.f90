@@ -92,8 +92,8 @@ program Calc2BodyBoundState
 
   call CalcBasisFuncs(Left,Right,Order,xPoints,LegPoints,xLeg, &
        xDim,xBounds,xNumPoints,2,uxx)
-  write (6,*) 'Calling CheckBasis...'
-  call CheckBasis(u,xDim,xNumPoints,LegPoints,xLeg,xPoints,700)
+!  write (6,*) 'Calling CheckBasis...'
+!  call CheckBasis(u,xDim,xNumPoints,LegPoints,xLeg,xPoints,700)
 
   H0=0.0d0
   S=0.0d0
@@ -108,13 +108,13 @@ program Calc2BodyBoundState
      write(6,*) 'Energy Eigenvalue (',n,') = ', eval(n)
   end do
   
-  ikeep=28
+  ikeep=29
 
   x=0.0d0
-  xMax=2.d0
+  xMax=5.d0
   write(6,*) 'Writing the wavefunction for the ground state to fort.777 ',ikeep
   do while(x.lt.xMax)
-     write(777,20) x, phirecon(x,ikeep,evec,Left,Right,xDim,MatrixDim,xNumPoints,xPoints,order)
+     write(777,10) x, -phirecon(x,ikeep,evec,Left,Right,xDim,MatrixDim,xNumPoints,xPoints,order)
      x=x+0.001d0
   enddo
   write(777,*)
@@ -358,8 +358,8 @@ double precision function Vsqrc6(V0,x0,x,lwave)
   implicit none
   double precision x, x0, V0,lwave
   if (x.gt.x0) then
-     VsqrC6 = -x**(-6) + lwave*(lwave+1.d0)/(x*x)
+     VsqrC6 = -0.994596*x**(-6) - 0.00537041*x**(-8) - 0.000033133*x**(-10) + lwave*(lwave+1.d0)/(x*x)
   else
-     vsqrC6 = -V0
+     vsqrC6 = -V0 + lwave*(lwave+1.d0)/(x*x)
   endif
 end function Vsqrc6
